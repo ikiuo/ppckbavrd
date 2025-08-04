@@ -53,3 +53,7 @@ $ make deb-pkg
 ```
 
 1つ上のディレクトリに<code>ppckbavrd\_0.1.0-1\_powerpc.deb</code>などが作られます。
+
+## ビルド済みパッケージ
+
+- [Release-0.1.0](https://github.com/ikiuo/ppckbavrd/releases/tag/Release-0.1.0)
