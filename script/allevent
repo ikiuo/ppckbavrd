@@ -1,0 +1,88 @@
+#!/bin/sh
+
+if [ $# -lt 4 ]
+then
+    echo "Usage $0 PORT CODE TIME SEC"
+    exit 1
+fi
+
+PORT=$1
+CODE=$2
+TIME=$3
+TSEC=$4
+
+led_reboot() {
+    echo -n "CCCC" > $PORT
+}
+
+led_shutdown() {
+    echo -n "EEEE" > $PORT
+}
+
+set_em_mode() {
+    echo -n "NGNG" > /dev/fl3
+}
+
+cmd_reboot() {
+    led_reboot
+    reboot
+}
+
+cmd_shutdown() {
+    led_shutdown
+    shutdown -h now
+}
+
+cmd_halt() {
+    led_shutdown
+    halt
+}
+
+check_file() {
+    [ -f $1 ] && exit 2
+    echo -n $TIME > $1
+}
+
+TMP_PREFIX=/tmp/ppckbavrd-
+
+TMP_POWER=$TMP_PREFIX-power
+TMP_INIT=$TMP_PREFIX-init
+TMP_FAN=$TMP_PREFIX-fan
+TMP_HALT=$TMP_PREFIX-half
+
+case $CODE in
+    20)
+        [ $TSEC -lt 2 ] && exit 0
+        check_file $TMP_POWER
+        if [ $TSEC -lt 6 ]
+        then
+            cmd_shutdown
+        else
+            cmd_reboot
+        fi
+        ;;
+
+    22)
+        [ $TSEC -lt 2 ] && exit 0
+        check_file $TMP_INIT
+        set_em_mode
+        cmd_reboot
+        ;;
+
+    24)
+        rm -f $TMP_FAN
+        ;;
+    25)
+        check_file $TMP_FAN
+        $0 25-wait $TIME $TSEC &
+        ;;
+    25-wait)
+        sleep 30
+        [ -f $TMP_FAN ] && cmd_halt
+        ;;
+
+    31)
+        check_file $TMP_HALT
+        cmd_halt
+        ;;
+esac

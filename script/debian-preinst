@@ -1,0 +1,36 @@
+#! /bin/sh
+
+set -e
+
+case "$1" in
+    install|upgrade)
+        if [ -x /usr/sbin/ppckbavrd ]
+        then
+            start-stop-daemon \
+                --stop --quiet --oknodo \
+                --pidfile /var/run/ppckbavrd.pid \
+                --name ppckbavrd
+            /usr/sbin/update-rc.d ppckbavrd remove
+        fi
+        ;;
+
+    abort-upgrade)
+        if [ -x /usr/sbin/ppckbavrd ]
+        then
+            /usr/sbin/update-rc.d ppckbavrd defaults 95
+            start-stop-daemon \
+                --start --quiet \
+                --pidfile /var/run/ppckbavrd.pid \
+                --exec /usr/sbin/ppckbavrd
+        fi
+        ;;
+
+    *)
+        echo "preinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
