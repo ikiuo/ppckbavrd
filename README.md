@@ -56,4 +56,4 @@ $ make deb-pkg
 
 ## ビルド済みパッケージ
 
-- [Release-0.1.0](https://github.com/ikiuo/ppckbavrd/releases/tag/Release-0.1.0)
+- [Release-0.1.0](https://github.com/ikiuo/ppckbavrd/releases/tag/Release-0.1.0) : debian 3.0 (woody) 上でビルド
