@@ -40,20 +40,18 @@ $ sudo /usr/sbin/update-rc.d ppckbavrd defaults 95
 
 ## debian用パッケージ
 
-パッケージのビルドに必要なツールのインストール
+debian 3.0 woody 上でパッケージを作成しています。
+
+### パッケージのビルドに必要なツールのインストール
 
 ```
 $ sudo apt-get install build-essential debhelper dh-make devscripts fakeroot
 ```
 
-パッケージのビルド
+### パッケージのビルド
 
 ```
 $ make deb-pkg
 ```
 
 1つ上のディレクトリに<code>ppckbavrd\_0.1.0-1\_powerpc.deb</code>などが作られます。
-
-## ビルド済みパッケージ
-
-- [Release-0.1.0](https://github.com/ikiuo/ppckbavrd/releases/tag/Release-0.1.0) : debian 3.0 (woody) 上でビルド
